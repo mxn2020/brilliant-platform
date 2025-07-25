@@ -1,7 +1,7 @@
 // src/pages/Landing.tsx
 
 import React, { useState, useEffect } from 'react';
-import { Database, Zap, Code, Globe, Users, Star, User } from 'lucide-react';
+import { Database, Zap, Code, Globe, Users, Star, User, TestTube, CheckCircle, Play, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Container, Button, Card, CardContent, Badge, Header, Nav, Section, Span, H1, H2, P, Div, Footer } from '../lib/dev-container';
 import { useAuth } from '../components/auth/AuthProvider';
@@ -28,51 +28,87 @@ const getTechBadgeId = (index: number): ComponentRegistryId => {
   return ids[index] || 'noID';
 };
 
+const getTestCardId = (index: number): ComponentRegistryId => {
+  const ids: ComponentRegistryId[] = ['test-card-0', 'test-card-1', 'test-card-2', 'test-card-3'];
+  return ids[index] || 'noID';
+};
+
 export const Landing: React.FC = () => {
   const [mounted, setMounted] = useState(false);
+  const [testResults, setTestResults] = useState<{ [key: string]: boolean }>({});
   const { isAuthenticated, user } = useAuth();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  const runTest = (testId: string) => {
+    setTestResults(prev => ({
+      ...prev,
+      [testId]: Math.random() > 0.3 // 70% success rate for demo
+    }));
+  };
+
   const features = [
     {
-      icon: <Zap className="w-8 h-8 text-yellow-500" />,
-      title: "Lightning Fast",
-      description: "Built with Vite for instant hot module replacement and blazing fast builds"
+      icon: <TestTube className="w-8 h-8 text-blue-500" />,
+      title: "Interactive Testing",
+      description: "Test components and functionality with real-time feedback and results"
     },
     {
-      icon: <Database className="w-8 h-8 text-green-500" />,
-      title: "MongoDB + Prisma",
-      description: "Type-safe database access with MongoDB flexibility and Prisma's developer experience"
+      icon: <CheckCircle className="w-8 h-8 text-green-500" />,
+      title: "Validation Suite",
+      description: "Comprehensive validation testing for forms, inputs, and user interactions"
     },
     {
-      icon: <Code className="w-8 h-8 text-blue-500" />,
-      title: "TypeScript Ready",
-      description: "Full TypeScript support with strict type checking and IntelliSense"
+      icon: <Play className="w-8 h-8 text-purple-500" />,
+      title: "Live Demos",
+      description: "Interactive demonstrations of template features and capabilities"
     },
     {
-      icon: <Globe className="w-8 h-8 text-purple-500" />,
-      title: "Deploy Anywhere",
-      description: "Ready for Netlify, Vercel, or any modern hosting platform"
+      icon: <Settings className="w-8 h-8 text-orange-500" />,
+      title: "Configuration Tests",
+      description: "Test and validate different configuration options and settings"
     }
   ];
 
   const stats = [
-    { label: "Build Time", value: "< 2s" },
-    { label: "Bundle Size", value: "< 50KB" },
-    { label: "TypeScript", value: "100%" },
-    { label: "Performance", value: "A+" }
+    { label: "Test Cases", value: "50+" },
+    { label: "Success Rate", value: "98%" },
+    { label: "Components", value: "25+" },
+    { label: "Coverage", value: "95%" }
+  ];
+
+  const testSuites = [
+    {
+      name: "Component Tests",
+      description: "Test UI components and interactions",
+      tests: ["Button clicks", "Form validation", "Navigation", "Responsive design"]
+    },
+    {
+      name: "Authentication Tests",
+      description: "Test login, registration, and security",
+      tests: ["Login flow", "Registration", "Protected routes", "Session management"]
+    },
+    {
+      name: "Database Tests",
+      description: "Test data operations and persistence",
+      tests: ["Create records", "Read operations", "Update data", "Delete operations"]
+    },
+    {
+      name: "Performance Tests",
+      description: "Test application performance and speed",
+      tests: ["Load times", "Bundle size", "Memory usage", "Network requests"]
+    }
   ];
 
   return (
-    <Container componentId="landing-page-root"> {/* Changed to direct ID */}
+    <Container componentId="landing-page-root">
       <Div 
         devId="main-wrapper" 
         devName="Main Wrapper" 
         devDescription="Main page wrapper with gradient background"
-        className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"
+        className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900"
       >
       {/* Header */}
       <Header 
@@ -93,16 +129,16 @@ export const Landing: React.FC = () => {
             devDescription="Company logo and brand name"
             className="flex items-center space-x-2"
           >
-            <Div devId="noID" className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-              <Code className="w-5 h-5 text-white" />
+            <Div devId="noID" className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+              <TestTube className="w-5 h-5 text-white" />
             </Div>
             <Span 
               devId="brand-name" 
               devName="Brand Name" 
-              devDescription="Geenius Template brand name"
+              devDescription="Test Template brand name"
               className="text-xl font-bold text-white"
             >
-              Geenius Template
+              Test Template
             </Span>
           </Div>
           <Div 
@@ -140,7 +176,7 @@ export const Landing: React.FC = () => {
                     devId="nav-dashboard-button"
                     devName="Navigation Dashboard Button"
                     devDescription="Dashboard button in navigation header for authenticated users"
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
                   >
                     <User className="w-4 h-4 mr-2" />
                     Dashboard
@@ -170,7 +206,7 @@ export const Landing: React.FC = () => {
                     devId="nav-register-button"
                     devName="Navigation Register Button"
                     devDescription="Get started button in navigation header"
-                    className="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors"
+                    className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
                   >
                     Get Started
                   </Button>
@@ -182,7 +218,7 @@ export const Landing: React.FC = () => {
       </Header>
 
       {/* Hero Section */}
-      <Container componentId="hero-section"> {/* Changed to direct ID */}
+      <Container componentId="hero-section">
         <Section 
           devId="hero-content" 
           devName="Hero Content" 
@@ -198,27 +234,27 @@ export const Landing: React.FC = () => {
             <H1 
               devId="hero-title" 
               devName="Hero Title" 
-              devDescription="Main hero title showcasing the tech stack"
+              devDescription="Main hero title showcasing the test platform"
               className="text-5xl md:text-7xl font-bold text-white mb-6"
             >
-              Vite + React + 
+              Test Your 
               <Span 
-                devId="mongodb-highlight" 
-                devName="MongoDB Highlight" 
-                devDescription="Highlighted MongoDB text in gradient"
-                className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+                devId="template-highlight" 
+                devName="Template Highlight" 
+                devDescription="Highlighted Template text in gradient"
+                className="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
               >
-                {' '}MongoDB
+                {' '}Template
               </Span>
             </H1>
             <P 
               devId="hero-description" 
               devName="Hero Description" 
-              devDescription="Hero Section description explaining the template benefits"
+              devDescription="Hero Section description explaining the test platform benefits"
               className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto"
             >
-              Modern full-stack template with lightning-fast development, type-safe database access, 
-              and production-ready deployment configuration.
+              Interactive testing platform for validating components, functionality, and performance. 
+              Test everything from UI interactions to database operations.
             </P>
             <Div 
               devId="hero-cta-buttons" 
@@ -229,10 +265,10 @@ export const Landing: React.FC = () => {
               {isAuthenticated ? (
                 <Link to="/dashboard">
                   <Button 
-                    devId="hero-start-building"
-                    devName="Start Building Button"
-                    devDescription="Primary call-to-action button for starting to build with the template"
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
+                    devId="hero-start-testing"
+                    devName="Start Testing Button"
+                    devDescription="Primary call-to-action button for starting tests"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
                   >
                     Go to Dashboard
                   </Button>
@@ -240,23 +276,23 @@ export const Landing: React.FC = () => {
               ) : (
                 <Link to="/register">
                   <Button 
-                    devId="hero-start-building"
-                    devName="Start Building Button"
-                    devDescription="Primary call-to-action button for starting to build with the template"
-                    className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
+                    devId="hero-start-testing"
+                    devName="Start Testing Button"
+                    devDescription="Primary call-to-action button for starting tests"
+                    className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
                   >
-                    Start Building
+                    Start Testing
                   </Button>
                 </Link>
               )}
               <Button 
-                devId="hero-github-button"
-                devName="View on GitHub Button"
-                devDescription="Secondary button to view the project on GitHub"
+                devId="hero-view-tests"
+                devName="View Tests Button"
+                devDescription="Secondary button to view available tests"
                 variant="outline"
-                className="border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all"
+                className="border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all"
               >
-                View on GitHub
+                View Tests
               </Button>
             </Div>
           </Div>
@@ -264,11 +300,11 @@ export const Landing: React.FC = () => {
       </Container>
 
       {/* Stats Section */}
-      <Container componentId="stats-section"> {/* Changed to direct ID */}
+      <Container componentId="stats-section">
         <Section 
           devId="stats-content" 
           devName="Stats Content" 
-          devDescription="Statistics Section showing performance metrics"
+          devDescription="Statistics Section showing test metrics"
           className="container mx-auto px-4 py-12"
         >
           <Div 
@@ -296,12 +332,12 @@ export const Landing: React.FC = () => {
       </Container>
 
       {/* Features Section */}
-      <Container componentId="features-section"> {/* Changed to direct ID */}
+      <Container componentId="features-section">
         <Section devId="noID" className="container mx-auto px-4 py-20">
           <Div devId="noID" className="text-center mb-16">
-            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Why Choose This Template?</H2>
+            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Testing Features</H2>
             <P devId="noID" className="text-gray-300 max-w-2xl mx-auto">
-              Everything you need to build modern web applications with the latest technologies
+              Comprehensive testing tools to validate every aspect of your application
             </P>
           </Div>
           <Div devId="noID" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -311,7 +347,7 @@ export const Landing: React.FC = () => {
                 devId={getFeatureCardId(index)}
                 devName={`${feature.title} Feature Card`}
                 devDescription={`Feature card highlighting ${feature.title}: ${feature.description}`}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-purple-500/50 transition-all"
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all"
               >
                 <CardContent devId="noID" className="p-0">
                   <Div devId="noID" className="mb-4">{feature.icon}</Div>
@@ -324,23 +360,78 @@ export const Landing: React.FC = () => {
         </Section>
       </Container>
 
-      {/* Tech Stack Section */}
-      <Container componentId="tech-stack-section"> {/* Changed to direct ID */}
+      {/* Interactive Test Section */}
+      <Container componentId="interactive-test-section">
         <Section devId="noID" className="container mx-auto px-4 py-20">
           <Div devId="noID" className="text-center mb-16">
-            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Modern Tech Stack</H2>
+            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Try Interactive Tests</H2>
             <P devId="noID" className="text-gray-300 max-w-2xl mx-auto">
-              Built with the most popular and reliable technologies
+              Test different components and features right here on the landing page
+            </P>
+          </Div>
+          <Div devId="noID" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {testSuites.map((suite, index) => (
+              <Card 
+                key={index} 
+                devId={getTestCardId(index)}
+                devName={`${suite.name} Test Card`}
+                devDescription={`Interactive test card for ${suite.name}`}
+                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-blue-500/50 transition-all"
+              >
+                <CardContent devId="noID" className="p-0">
+                  <h3 className="text-lg font-semibold text-white mb-2">{suite.name}</h3>
+                  <P devId="noID" className="text-gray-400 text-sm mb-4">{suite.description}</P>
+                  <Div devId="noID" className="space-y-2 mb-4">
+                    {suite.tests.map((test, testIndex) => (
+                      <Div key={testIndex} devId="noID" className="flex items-center justify-between text-sm">
+                        <span className="text-gray-300">{test}</span>
+                        {testResults[`${index}-${testIndex}`] !== undefined && (
+                          <Badge 
+                            devId="noID"
+                            className={testResults[`${index}-${testIndex}`] ? "bg-green-500" : "bg-red-500"}
+                          >
+                            {testResults[`${index}-${testIndex}`] ? "Pass" : "Fail"}
+                          </Badge>
+                        )}
+                      </Div>
+                    ))}
+                  </Div>
+                  <Button 
+                    devId="noID"
+                    onClick={() => {
+                      suite.tests.forEach((_, testIndex) => {
+                        setTimeout(() => runTest(`${index}-${testIndex}`), testIndex * 200);
+                      });
+                    }}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  >
+                    <Play className="w-4 h-4 mr-2" />
+                    Run Tests
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </Div>
+        </Section>
+      </Container>
+
+      {/* Tech Stack Section */}
+      <Container componentId="tech-stack-section">
+        <Section devId="noID" className="container mx-auto px-4 py-20">
+          <Div devId="noID" className="text-center mb-16">
+            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Testing Stack</H2>
+            <P devId="noID" className="text-gray-300 max-w-2xl mx-auto">
+              Built with modern testing tools and frameworks
             </P>
           </Div>
           <Div devId="noID" className="grid grid-cols-2 md:grid-cols-6 gap-8">
             {[
-              { name: "Vite", color: "from-yellow-400 to-orange-500" },
+              { name: "Jest", color: "from-red-400 to-red-500" },
               { name: "React", color: "from-blue-400 to-cyan-400" },
               { name: "TypeScript", color: "from-blue-500 to-blue-600" },
-              { name: "MongoDB", color: "from-green-400 to-green-500" },
-              { name: "Prisma", color: "from-purple-400 to-purple-500" },
-              { name: "Tailwind", color: "from-teal-400 to-teal-500" }
+              { name: "Cypress", color: "from-green-400 to-green-500" },
+              { name: "Vitest", color: "from-yellow-400 to-yellow-500" },
+              { name: "Testing Library", color: "from-purple-400 to-purple-500" }
             ].map((tech, index) => (
               <Div key={index} devId="noID" className="text-center">
                 <Div devId={getTechLetterId(index)} className={`w-16 h-16 mx-auto mb-3 rounded-xl bg-gradient-to-br ${tech.color} flex items-center justify-center`}>
@@ -361,23 +452,23 @@ export const Landing: React.FC = () => {
       </Container>
 
       {/* CTA Section */}
-      <Container componentId="cta-section"> {/* Changed to direct ID */}
+      <Container componentId="cta-section">
         <Section devId="noID" className="container mx-auto px-4 py-20">
-          <Div devId="noID" className="bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-2xl p-12 text-center border border-purple-500/30">
-            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Ready to Build Something Amazing?</H2>
+          <Div devId="noID" className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-2xl p-12 text-center border border-blue-500/30">
+            <H2 devId="noID" className="text-4xl font-bold text-white mb-4">Ready to Start Testing?</H2>
             <P devId="noID" className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              Get started with this template and build your next project with confidence
+              Join our testing platform and validate your applications with confidence
             </P>
             <Div devId="noID" className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                devId="cta-start-project"
-                devName="Start Project Button"
-                devDescription="Primary CTA button to start a new project"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
+                devId="cta-start-testing"
+                devName="Start Testing Button"
+                devDescription="Primary CTA button to start testing"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 rounded-lg font-semibold transition-all transform hover:scale-105"
               >
                 <span className="flex items-center gap-2">
-                  <Star className="w-5 h-5" />
-                  Start Project
+                  <TestTube className="w-5 h-5" />
+                  Start Testing
                 </span>
               </Button>
               <Button 
@@ -385,7 +476,7 @@ export const Landing: React.FC = () => {
                 devName="Join Community Button"
                 devDescription="Secondary CTA button to join the community"
                 variant="outline"
-                className="border border-purple-500 text-purple-400 hover:bg-purple-500 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all"
+                className="border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white px-8 py-3 rounded-lg font-semibold transition-all"
               >
                 <span className="flex items-center gap-2">
                   <Users className="w-5 h-5" />
@@ -406,11 +497,11 @@ export const Landing: React.FC = () => {
       >
         <Div devId="noID" className="flex flex-col md:flex-row justify-between items-center">
           <Div devId="noID" className="text-gray-400 mb-4 md:mb-0">
-            © 2024 Geenius Template. Built with ❤️ for developers.
+            © 2024 Test Template. Built for comprehensive testing.
           </Div>
           <Div devId="noID" className="flex space-x-6">
             <a href="#" className="text-gray-400 hover:text-white transition-colors">Documentation</a>
-            <a href="#" className="text-gray-400 hover:text-white transition-colors">GitHub</a>
+            <a href="#" className="text-gray-400 hover:text-white transition-colors">Test Guides</a>
             <a href="#" className="text-gray-400 hover:text-white transition-colors">Support</a>
           </Div>
         </Div>
