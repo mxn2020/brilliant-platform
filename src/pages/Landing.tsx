@@ -74,7 +74,7 @@ export const Landing: React.FC = () => {
 
   const stats = [
     { label: "Test Cases", value: "50+" },
-    { label: "Success Rate", value: "98%" },
+    { label: "Success Rate", value: "25" },
     { label: "Components", value: "25+" },
     { label: "Coverage", value: "95%" }
   ];
@@ -101,6 +101,43 @@ export const Landing: React.FC = () => {
       tests: ["Load times", "Bundle size", "Memory usage", "Network requests"]
     }
   ];
+
+  // Helper function to get stat card styling
+  const getStatCardStyling = (index: number) => {
+    if (index === 1) {
+      // stat-card-1: black background with yellow font
+      return "bg-black backdrop-blur-sm rounded-xl p-6 text-center border border-white/10";
+    } else if (index === 2) {
+      // stat-card-2: yellow background with black font
+      return "bg-yellow-400 backdrop-blur-sm rounded-xl p-6 text-center border border-white/10";
+    } else {
+      // Default styling for other cards
+      return "bg-white/5 backdrop-blur-sm rounded-xl p-6 text-center border border-white/10";
+    }
+  };
+
+  // Helper function to get stat card text styling
+  const getStatCardTextStyling = (index: number) => {
+    if (index === 1) {
+      // stat-card-1: yellow text
+      return {
+        value: "text-2xl font-bold text-yellow-400 mb-2",
+        label: "text-yellow-300"
+      };
+    } else if (index === 2) {
+      // stat-card-2: black text
+      return {
+        value: "text-2xl font-bold text-black mb-2",
+        label: "text-black"
+      };
+    } else {
+      // Default styling for other cards
+      return {
+        value: "text-2xl font-bold text-white mb-2",
+        label: "text-gray-400"
+      };
+    }
+  };
 
   return (
     <Container componentId="landing-page-root">
@@ -313,20 +350,23 @@ export const Landing: React.FC = () => {
             devDescription="Grid container for statistics cards"
             className="grid grid-cols-2 md:grid-cols-4 gap-6"
           >
-            {stats.map((stat, index) => (
-              <Card 
-                key={index} 
-                devId={getStatCardId(index)}
-                devName={`${stat.label} Stat Card`}
-                devDescription={`Statistical card showing ${stat.label}: ${stat.value}`}
-                className="bg-white/5 backdrop-blur-sm rounded-xl p-6 text-center border border-white/10"
-              >
-                <CardContent devId="noID"  className="p-0">
-                  <Div devId="noID" className="text-2xl font-bold text-white mb-2">{stat.value}</Div>
-                  <Div devId="noID" className="text-gray-400">{stat.label}</Div>
-                </CardContent>
-              </Card>
-            ))}
+            {stats.map((stat, index) => {
+              const textStyling = getStatCardTextStyling(index);
+              return (
+                <Card 
+                  key={index} 
+                  devId={getStatCardId(index)}
+                  devName={`${stat.label} Stat Card`}
+                  devDescription={`Statistical card showing ${stat.label}: ${stat.value}`}
+                  className={getStatCardStyling(index)}
+                >
+                  <CardContent devId="noID"  className="p-0">
+                    <Div devId="noID" className={textStyling.value}>{stat.value}</Div>
+                    <Div devId="noID" className={textStyling.label}>{stat.label}</Div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </Div>
         </Section>
       </Container>
