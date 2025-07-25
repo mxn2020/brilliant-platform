@@ -1,4 +1,4 @@
-# Geenius Template - Vite + React + MongoDB
+# Geenius Template - Vite + React + MongoDB 
 
 > Multi-provider AI development workflow tool that automates project initialization, feature development, testing, and deployment using various AI providers (Claude, GPT-4, Gemini, Grok).
 
